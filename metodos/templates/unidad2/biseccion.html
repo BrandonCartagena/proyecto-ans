@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+	<h1 class="fs-2 text fw-light mb-3">Metodo de la biseccion</h1>
+	<form action="" method="POST">
+		{% csrf_token %}
+		<div class="row">
+			<div class="col-md-4 mb-3">
+				<label id="f_x">Funcion</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text fst-italic">f(x) =</span>
+					<input class="form-control" type="text" name="f_x" id="f_x" value="{{ form_data.f_x }}" required>
+				</div>
+			</div>
+			<div class="col-md-2 mb-3">
+				<label id="cifras">Cifras</label>
+				<input class="form-control" type="number" name="cifras" id="cifras" value="{{ form_data.cifras }}" min="1" max="10" pattern="[0-9]" required>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 mb-3">
+				<label id="x1">x<sub>1</sub></label>
+				<input class="form-control" type="number" name="x1" id="x1" value="{{ form_data.x1 }}" required>
+			</div>
+			<div class="col-md-2 mb-3">
+				<label id="x2">x<sub>2</sub></label>
+				<input class="form-control" type="number" name="x2" id="x2" value="{{ form_data.x2 }}" required>
+			</div>
+		</div>
+		<div class="mb-3">
+			<button class="btn btn-dark">Resolver</button>
+			{% if error %}
+			<span class="text-danger">{{ error }}</span>
+			{% endif %}
+		</div>
+	</form>
+	{% if data %}
+	<table class="table table-sm table-bordered table-striped-columns">
+		<thead>
+			<tr>
+				<th>Iteracion</th>
+				<th>x<sub>1</sub></th>
+				<th>x<sub>2</sub></th>
+				<th>x<sub>r</sub></th>
+				<th>f(x<sub>1</sub>)</th>
+				<th>f(x<sub>r</sub>)</th>
+				<th>f(x<sub>1</sub>)f(x<sub>r</sub>)</th>
+				<th>|E<sub>a</sub>|%</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for row in data.rows %}
+			<tr>
+				<td>{{ row.iteracion }}</td>
+				<td>{{ row.x1 }}</td>
+				<td>{{ row.x2 }}</td>
+				<td>{{ row.xr }}</td>
+				<td>{{ row.f_x1 }}</td>
+				<td>{{ row.f_xr }}</td>
+				<td>{{ row.f_x1_f_xr }}</td>
+				<td>{{ row.ea }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<div class="card text-center mb-3">
+		<div class="card-body">
+			La raiz es {{ data.raiz }} con un error de {{ data.error }}%
+		</div>
+	</div>
+	{% endif %}
+</div>
+{% endblock %}
