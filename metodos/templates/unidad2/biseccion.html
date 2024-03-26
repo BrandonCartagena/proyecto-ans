@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-	<h1 class="fs-2 text fw-light mb-3">Metodo de la biseccion</h1>
+	<h1 class="fs-2 text fw-light mb-3">Método de la bisección</h1>
 	<form action="" method="POST">
 		{% csrf_token %}
 		<div class="row">
@@ -36,6 +36,12 @@
 		</div>
 	</form>
 	{% if data %}
+
+	<p>
+		Aplicando el método de la bisección a la función $f(x) = {{ data.f_x }}$ en el intervalo [{{ form_data.x1 }}, {{ form_data.x2 }}] con {{ form_data.cifras }} cifras significativas<br>
+		Se obtuvo que la raíz es <b>{{ data.raiz }}</b> con un error de <b>{{ data.error }}%</b>
+	</p>
+
 	<table class="table table-sm table-bordered table-striped-columns">
 		<thead>
 			<tr>
@@ -64,11 +70,6 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	<div class="card text-center mb-3">
-		<div class="card-body">
-			La raiz es {{ data.raiz }} con un error de {{ data.error }}%
-		</div>
-	</div>
 	{% endif %}
 </div>
 {% endblock %}

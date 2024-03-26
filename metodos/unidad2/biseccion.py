@@ -42,6 +42,7 @@ def biseccion(funcion, x1, x2, cifras_significativas):
         xr_anterior = xr
 
     return {
+        'f_x': sp.latex(f_x),
         'rows': rows,
         'raiz': xr,
         'error': round(Ea, cifras_significativas)
