@@ -22,7 +22,7 @@ def biseccion(request):
 				'data': data, 
 				'form_data': request.POST
 			})
-		except:
+		except Exception as e:
 			return render(request, 'unidad2/biseccion.html', {
 				'error': 'Debes introducir datos validos', 
 				'form_data': request.POST
@@ -31,3 +31,22 @@ def biseccion(request):
 
 def falsa_posicion(request):
 	return render(request, 'unidad2/falsa_posicion.html')
+
+def secante(request):
+	if request.method == 'POST':
+		try:
+			f_x = request.POST['f_x']
+			x1 = float(request.POST['x1'])
+			x2 = float(request.POST['x2'])
+			cifras = int(request.POST['cifras'])
+			data = unidad2.secante(f_x, x1, x2, cifras if cifras > 0 else 1)
+			return render(request, 'unidad2/secante.html', {
+				'data': data, 
+				'form_data': request.POST
+			})
+		except Exception as e:
+			return render(request, 'unidad2/secante.html', {
+				'error': 'Debes introducir datos validos', 
+				'form_data': request.POST
+			})
+	return render(request, 'unidad2/secante.html')
