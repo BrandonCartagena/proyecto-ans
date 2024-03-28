@@ -1,5 +1,8 @@
 import sympy as sp
-from sympy.abc import x
+from sympy.abc import x, y
+import matplotlib.pyplot as plt
+import io
+import urllib, base64
 
 aprox_actual, aprox_anterior = sp.symbols('aprox_actual aprox_anterior')
 error_aproximado = ((aprox_actual - aprox_anterior) / aprox_actual) * 100
@@ -41,8 +44,16 @@ def biseccion(funcion, x1, x2, cifras_significativas):
 
         xr_anterior = xr
 
+    sp.plot(f_x, ylim=(-20, 20))
+    fig = plt.gcf()
+    buf = io.BytesIO()
+    fig.savefig(buf,format='png')
+    buf.seek(0)
+    uri = urllib.parse.quote(base64.b64encode(buf.read()))
+
     return {
         'f_x': sp.latex(f_x),
+        'grafica': uri,
         'rows': rows,
         'raiz': xr,
         'error': round(Ea, cifras_significativas)
