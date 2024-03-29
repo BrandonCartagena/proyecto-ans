@@ -10,6 +10,8 @@ def integrantes(request):
 def info(request):
 	return render(request, 'info.html')
 
+#	UNIDAD #2
+
 def biseccion(request):
 	if request.method == 'POST':
 		try:
@@ -24,7 +26,7 @@ def biseccion(request):
 			})
 		except Exception as e:
 			return render(request, 'unidad2/biseccion.html', {
-				'error': 'Debes introducir datos validos', 
+				'error': 'Debes introducir datos válidos', 
 				'form_data': request.POST
 			})
 	return render(request, 'unidad2/biseccion.html')
@@ -46,7 +48,25 @@ def secante(request):
 			})
 		except Exception as e:
 			return render(request, 'unidad2/secante.html', {
-				'error': 'Debes introducir datos validos', 
+				'error': 'Debes introducir datos válidos', 
 				'form_data': request.POST
 			})
 	return render(request, 'unidad2/secante.html')
+
+def newton_raphson(request):
+	if request.method == 'POST':
+		try:
+			f_x = request.POST['f_x']
+			xi = float(request.POST['xi'])
+			cifras = int(request.POST['cifras'])
+			data = unidad2.newton_raphson(f_x, xi, cifras)
+			return render(request, 'unidad2/newton_raphson.html', {
+				'data': data, 
+				'form_data': request.POST
+			})
+		except Exception as e:
+			return render(request, 'unidad2/newton_raphson.html', {
+				'error': 'Debes introducir datos válidos', 
+				'form_data': request.POST
+			})
+	return render(request, 'unidad2/newton_raphson.html')

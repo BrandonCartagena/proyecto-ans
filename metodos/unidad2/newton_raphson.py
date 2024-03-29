@@ -7,45 +7,45 @@ import urllib, base64
 aprox_actual, aprox_anterior = sp.symbols('aprox_actual aprox_anterior')
 error_aproximado = ((aprox_actual - aprox_anterior) / aprox_actual) * 100
 
-def secante(funcion, x1, x2, cifras_significativas):
+def newton_raphson(funcion, xi, cifras_significativas):
 	f_x = sp.sympify(funcion.strip().replace('^','**').replace('sen', 'sin').replace('e', 'E'))
+	f_x_1ra_derivada = f_x.diff(x)
+	f_x_2da_derivada = f_x_1ra_derivada.diff(x)
 
 	Es = 0.5 * (10 ** (2 - cifras_significativas))
 	Ea = 100
+
+	f_xi = f_x.evalf(subs={x:xi})
+	f_xi_1ra_derivada = f_x_1ra_derivada.evalf(subs={x:xi})
+	f_xi_2da_derivada = f_x_2da_derivada.evalf(subs={x:xi})
+
+	convergencia = abs((f_xi * f_xi_2da_derivada) / f_xi_1ra_derivada**2) < 1
 
 	iteraciones = []
 
 	iteracion = 0
 
-	f_x1 = f_x.evalf(subs={x:x1})
-	f_x2 = f_x.evalf(subs={x:x2})
-
-	if f_x1 * f_x2 < 0:
+	if convergencia:
 		while Ea > Es:
 			iteracion += 1
 
-			xr = x2 - (f_x2 * ((x2 - x1) / (f_x2 - f_x1)))
+			xi_anterior = xi
 
-			f_xr = f_x.evalf(subs={x:xr})
+			xi = xi - (f_xi / f_xi_1ra_derivada)
 
-			if iteracion >= 2: Ea = abs(error_aproximado.evalf(subs={aprox_actual:xr, aprox_anterior:x2}))
+			Ea = abs(error_aproximado.evalf(subs={aprox_actual:xi, aprox_anterior:xi_anterior}))
 
 			iteraciones.append({
 				'n_iteracion': iteracion, 
-				'x1': x1, 
-				'x2': x2, 
-				'f_x1': f_x1,
-				'f_x2': f_x2,
-				'xr': xr, 
-				'f_xr': f_xr, 
+				'xi': xi_anterior, 
+				'f_xi': f_xi, 
+				'f_xi_1ra_derivada': f_xi_1ra_derivada, 
+				'xr': xi, 
 				'ea': '-' if iteracion == 1 else round(Ea, cifras_significativas)
 			})
 
-			x1 = x2
-			x2 = xr
-
-			f_x1 = f_x.evalf(subs={x:x1})
-			f_x2 = f_x.evalf(subs={x:x2})
+			f_xi = f_x.evalf(subs={x:xi})
+			f_xi_1ra_derivada = f_x_1ra_derivada.evalf(subs={x:xi})
 
 		sp.plot(f_x, ylim=(-20, 20))
 		fig = plt.gcf()
@@ -59,6 +59,6 @@ def secante(funcion, x1, x2, cifras_significativas):
 			'grafica': uri,
 			'n_iteraciones': iteracion,
 			'iteraciones': iteraciones,
-			'raiz': xr,
+			'raiz': xi,
 			'error': round(Ea, cifras_significativas)
 		}

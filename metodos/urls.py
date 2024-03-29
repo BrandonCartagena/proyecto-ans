@@ -7,5 +7,6 @@ urlpatterns = [
 	path('info/', views.info, name='info'),
 	path('unidad2/biseccion/', views.biseccion, name='biseccion'),
 	path('unidad2/falsa_posicion/', views.falsa_posicion, name='falsa_posicion'),
-	path('unidad2/secante/', views.secante, name='secante')
+	path('unidad2/secante/', views.secante, name='secante'),
+	path('unidad2/newton_raphson', views.newton_raphson, name='newton_raphson')
 ]

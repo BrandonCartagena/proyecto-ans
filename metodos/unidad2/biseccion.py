@@ -13,7 +13,7 @@ def biseccion(funcion, x1, x2, cifras_significativas):
     Es = 0.5 * (10 ** (2 - cifras_significativas))
     Ea = 100
 
-    rows = []
+    iteraciones = []
 
     iteracion = 0
 
@@ -27,8 +27,8 @@ def biseccion(funcion, x1, x2, cifras_significativas):
 
         if iteracion >= 2: Ea = abs(error_aproximado.evalf(subs={aprox_actual:xr, aprox_anterior:xr_anterior}))
 
-        rows.append({
-            'iteracion': iteracion, 
+        iteraciones.append({
+            'n_iteracion': iteracion, 
             'x1': x1, 
             'x2': x2, 
             'xr': xr, 
@@ -54,7 +54,8 @@ def biseccion(funcion, x1, x2, cifras_significativas):
     return {
         'f_x': sp.latex(f_x),
         'grafica': uri,
-        'rows': rows,
+        'n_iteraciones': iteracion,
+        'iteraciones': iteraciones,
         'raiz': xr,
         'error': round(Ea, cifras_significativas)
     }

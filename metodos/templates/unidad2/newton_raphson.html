@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-	<h1 class="fs-2 text fw-light mb-3">Método de la secante</h1>
+	<h1 class="fs-2 text fw-light mb-3">Método de Newton Raphson</h1>
 	<form action="" method="POST">
 		{% csrf_token %}
 		<div class="row">
@@ -20,12 +20,8 @@
 		</div>
 		<div class="row">
 			<div class="col-md-2 mb-3">
-				<label id="x1">x<sub>1</sub></label>
-				<input class="form-control" type="number" name="x1" id="x1" step="0.001" value="{{ form_data.x1 }}" required>
-			</div>
-			<div class="col-md-2 mb-3">
-				<label id="x2">x<sub>2</sub></label>
-				<input class="form-control" type="number" name="x2" id="x2" step="0.001" value="{{ form_data.x2 }}" required>
+				<label id="xi">x<sub>i</sub></label>
+				<input class="form-control" type="number" name="xi" id="xi" step="0.001" value="{{ form_data.xi }}" required>
 			</div>
 		</div>
 		<div class="mb-3">
@@ -36,9 +32,8 @@
 		</div>
 	</form>
 	{% if data %}
-
 	<p>
-		Aplicando el método de la secante a la función $f(x) = {{ data.f_x }}$ en el intervalo [{{ form_data.x1 }}, {{ form_data.x2 }}] con {{ form_data.cifras }} cifras significativas<br>
+		Aplicando el método de la newton raphson a la función $f(x) = {{ data.f_x }}$ con el valor inicial de {{ form_data.xi }} con {{ form_data.cifras }} cifras significativas<br>
 		Se obtuvo que la raíz es <b>{{ data.raiz }}</b> con un error de <b>{{ data.error }}%</b>
 	</p>
 
@@ -53,12 +48,10 @@
 		<thead>
 			<tr>
 				<th>Iteración</th>
-				<th>x<sub>1</sub></th>
-				<th>x<sub>2</sub></th>
-				<th>f(x<sub>1</sub>)</th>
-				<th>f(x<sub>2</sub>)</th>
+				<th>x</th>
+				<th>f(x)</th>
+				<th>f'(x)</th>
 				<th>x<sub>r</sub></th>
-				<th>f(x<sub>r</sub>)</th>
 				<th>|E<sub>a</sub>|%</th>
 			</tr>
 		</thead>
@@ -66,12 +59,10 @@
 			{% for iteracion in data.iteraciones %}
 			<tr>
 				<td>{{ iteracion.n_iteracion }}</td>
-				<td>{{ iteracion.x1 }}</td>
-				<td>{{ iteracion.x2 }}</td>
-				<td>{{ iteracion.f_x1 }}</td>
-				<td>{{ iteracion.f_x2 }}</td>
+				<td>{{ iteracion.xi }}</td>
+				<td>{{ iteracion.f_xi }}</td>
+				<td>{{ iteracion.f_xi_1ra_derivada }}</td>
 				<td>{{ iteracion.xr }}</td>
-				<td>{{ iteracion.f_xr }}</td>
 				<td>{{ iteracion.ea }}</td>
 			</tr>
 			{% endfor %}

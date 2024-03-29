@@ -43,9 +43,11 @@
 	</p>
 
 	<div>
-		<p>Gráfica:</p>
+		<p>Gráfica de la función:</p>
 		<img src="data:image/png;base64,{{ data.grafica }}" height="650" ,width="650">
 	</div>
+
+	<p>Se obtuvieron {{ data.n_iteraciones }} iteraciones:</p>
 
 	<table class="table table-sm table-bordered table-striped-columns">
 		<thead>
@@ -61,16 +63,16 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for row in data.rows %}
+			{% for iteracion in data.iteraciones %}
 			<tr>
-				<td>{{ row.iteracion }}</td>
-				<td>{{ row.x1 }}</td>
-				<td>{{ row.x2 }}</td>
-				<td>{{ row.xr }}</td>
-				<td>{{ row.f_x1 }}</td>
-				<td>{{ row.f_xr }}</td>
-				<td>{{ row.f_x1_f_xr }}</td>
-				<td>{{ row.ea }}</td>
+				<td>{{ iteracion.n_iteracion }}</td>
+				<td>{{ iteracion.x1 }}</td>
+				<td>{{ iteracion.x2 }}</td>
+				<td>{{ iteracion.xr }}</td>
+				<td>{{ iteracion.f_x1 }}</td>
+				<td>{{ iteracion.f_xr }}</td>
+				<td>{{ iteracion.f_x1_f_xr }}</td>
+				<td>{{ iteracion.ea }}</td>
 			</tr>
 			{% endfor %}
 		</tbody>
