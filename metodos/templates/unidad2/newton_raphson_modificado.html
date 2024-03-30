@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+	<h1 class="fs-2 text fw-light mb-3">Método de Newton Raphson modificado</h1>
+	<form action="" method="POST">
+		{% csrf_token %}
+		<div class="row">
+			<div class="col-md-4 mb-3">
+				<label id="f_x">Función</label>
+				<div class="input-group mb-3">
+					<span class="input-group-text fst-italic">f(x) =</span>
+					<input class="form-control" type="text" name="f_x" id="f_x" value="{{ form_data.f_x }}" required>
+				</div>
+			</div>
+			<div class="col-md-2 mb-3">
+				<label id="cifras">Cifras</label>
+				<input class="form-control" type="number" name="cifras" id="cifras" value="{{ form_data.cifras }}" min="1" max="10" pattern="[0-9]" required>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-2 mb-3">
+				<label id="xi">x<sub>i</sub></label>
+				<input class="form-control" type="number" name="xi" id="xi" step="0.001" value="{{ form_data.xi }}" required>
+			</div>
+		</div>
+		<div class="mb-3">
+			<button class="btn btn-dark">Resolver</button>
+			{% if error %}
+			<span class="text-danger">{{ error }}</span>
+			{% endif %}
+		</div>
+	</form>
+	{% if data %}
+	<p>
+		Aplicando el método de la newton raphson a la función $f(x) = {{ data.f_x }}$ con el valor inicial de {{ form_data.xi }} con {{ form_data.cifras }} cifras significativas<br>
+		Se obtuvo que la raíz es <b>{{ data.raiz }}</b> con un error de <b>{{ data.error }}%</b>
+	</p>
+
+	<div>
+		<p>Gráfica de la función:</p>
+		<img src="data:image/png;base64,{{ data.grafica }}" height="650" ,width="650">
+	</div>
+
+	<p>Se obtuvieron {{ data.n_iteraciones }} iteraciones:</p>
+
+	<table class="table table-sm table-bordered table-striped-columns">
+		<thead>
+			<tr>
+				<th>Iteración</th>
+				<th>x</th>
+				<th>f(x)</th>
+				<th>f'(x)</th>
+				<th>f''(x)</th>
+				<th>x<sub>r</sub></th>
+				<th>|E<sub>a</sub>|%</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for iteracion in data.iteraciones %}
+			<tr>
+				<td>{{ iteracion.n_iteracion }}</td>
+				<td>{{ iteracion.xi }}</td>
+				<td>{{ iteracion.f_xi }}</td>
+				<td>{{ iteracion.f_xi_1ra_derivada }}</td>
+				<td>{{ iteracion.f_xi_2da_derivada }}</td>
+				<td>{{ iteracion.xr }}</td>
+				<td>{{ iteracion.ea }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% endif %}
+</div>
+{% endblock %}
